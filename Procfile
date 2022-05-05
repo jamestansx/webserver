@@ -1,3 +1,3 @@
 web: waitress-serve \
-    --listen 0.0.0.0:$PORT \
+    --port=$PORT \
     run:webserver-blinkpie
