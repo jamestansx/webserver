@@ -70,3 +70,5 @@ def create_app(test_config=None, **kwargs):
     app.register_blueprint(users.users, url_prefix="/users/")
 
     return app
+
+app = create_app()
