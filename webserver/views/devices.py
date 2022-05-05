@@ -6,15 +6,16 @@ from flask_login import login_required
 
 from webserver.models import Data, User
 
+
+devices = Blueprint("devices", __name__, template_folder="../templates/devices")
+
+
 def get_deviceinfo(username, device_name):
     devicelist = User.query.filter_by(username=username).first().devicelist
     for deviceinfo in devicelist:
         if deviceinfo.name == device_name:
             return deviceinfo
-    else:
-        return None
-
-devices = Blueprint("devices", __name__, template_folder="../templates/devices")
+    return None
 
 
 @devices.route("/")

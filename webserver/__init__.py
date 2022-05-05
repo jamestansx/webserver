@@ -55,11 +55,9 @@ def create_app(test_config=None, **kwargs):
 
         return User.query.filter_by(id=user_id).first()
 
-
     @app.before_request
     def before_request():
         g.user = current_user
-
 
     from webserver.views import about, error_handler, devices, home, users
 

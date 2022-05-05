@@ -9,29 +9,26 @@ from webserver import db
 from webserver.models import Data, DeviceInfo, User
 
 parser = reqparse.RequestParser()
-parser.add_argument(
-    "data", type=dict, location="json", required=True
-)
-parser.add_argument(
-    "time_collected",
-    type=str,
-    location="json"
-)
+parser.add_argument("data", type=dict, location="json", required=True)
+parser.add_argument("time_collected", type=str, location="json")
+
 
 def get_deviceinfo(username, device_name):
     devicelist = User.query.filter_by(username=username).first().devicelist
     for deviceinfo in devicelist:
         if deviceinfo.name == device_name:
             return deviceinfo
-    else:
-        return None
+    return None
+
 
 class DeviceData(Resource):
     @jwt_required()
     def get(self, device_name):
         username = get_jwt_identity()
         deviceinfo = get_deviceinfo(username, device_name)
-        is_latest = request.args.get('latest', default=False, type=lambda x: x.lower() == 'true')
+        is_latest = request.args.get(
+            "latest", default=False, type=lambda x: x.lower() == "true"
+        )
 
         if deviceinfo is None:
             abort(404, description="API Key is invalid")
@@ -76,14 +73,14 @@ class DeviceData(Resource):
                 )
             except ValueError:
                 abort(
-                    406, description=f"date format should be {current_app.config['TIMEFORMAT']}"
+                    406,
+                    description=f"date format should be {current_app.config['TIMEFORMAT']}",
                 )
 
             new_data.time_collected = time_collected
         db.session.add(new_data)
         db.session.commit()
         return 200
-
 
     def validate_data(self, data, deviceinfo):
         if len(data) != len(deviceinfo.datatype):
@@ -93,12 +90,15 @@ class DeviceData(Resource):
                 return False
         return True
 
+
 class DataWLogin(Resource):
     @login_required
     def get(self, device_name):
         username = g.user.username
         deviceinfo = get_deviceinfo(username, device_name)
-        is_latest = request.args.get('latest', default=False, type=lambda x: x.lower() == 'true')
+        is_latest = request.args.get(
+            "latest", default=False, type=lambda x: x.lower() == "true"
+        )
 
         if deviceinfo is None:
             abort(404, description="API Key is invalid")
