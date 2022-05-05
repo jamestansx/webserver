@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} Sign In {% endblock %}
+
+{% block content %} 
+<div class="text-center">
+<h1 class="h3 mb-3 fw-normal">Sign In</h1>
+<hr>
+<form action="" method="post" class="form" role="form">
+    {{ form.csrf_token() }}
+<dl>
+    {{ wtf.form_errors(form, hiddens="only") }}
+    {{ wtf.form_field(form.username, class='form-control', placeholder='Username') }}
+    {{ wtf.form_field(form.password, class='form-control', placeholder='Password') }}
+</dl>
+<p><input type=submit class='btn btn-warning btn-block'>
+</form>
+<hr>
+</div>
+{% endblock %}
+
+
+
