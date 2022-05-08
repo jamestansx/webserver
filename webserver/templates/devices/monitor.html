@@ -5,8 +5,8 @@
 
 
 {% block content %}
-<h2 id='h2'></h2>
-<h4 id='h4'></h4>
+<h2 style="font-weight: bold" id='header2'></h2>
+<h4 style="font-weight: bold" id='header4'></h4>
 <div class="table-responsive">
 <table class="table table-striped table-hover" id='table'>
     <tr>
@@ -15,6 +15,11 @@
     </tr>
 </table>
 </div>
+
+<a class="btn btn-primary" href="{{request.base_url}}/graph" role="button">Generate Data Graph</a>
+
+
+
 
 <script>
 async function getData() {
@@ -31,8 +36,8 @@ async function getData() {
     async function renderData() {
         let json = await getData();
         let html = '<tr> <th>MEASUREMENT</th> <th>VALUE</th> </tr>';
-        document.getElementById('h2').innerHTML = json.device_name;
-        document.getElementById('h4').innerHTML = `(id: ${json.device_id})`;
+        document.getElementById('header2').innerHTML = json.device_name;
+        document.getElementById('header4').innerHTML = `(id: ${json.device_id})`;
         for (let i in json.data){
             for ([key, val] of Object.entries(json.data[i])){
                 html += `<tr><td>${key}</td>`;

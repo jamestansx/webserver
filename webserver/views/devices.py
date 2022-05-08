@@ -31,3 +31,23 @@ def monitor(device_name):
         + "?latest=true"
     )
     return render_template("devices/monitor.html", apipath=apipath)
+
+
+@devices.route("/<string:device_name>/graph")
+@login_required
+def graph(device_name):
+    deviceinfo = get_deviceinfo(g.user.username, device_name)
+
+    if deviceinfo is None:
+        abort(404, description="Device is not found")
+
+    datalist = Data.query.filter_by(device_id=deviceinfo.id).order_by(Data.id.desc()).all()
+    data = list()
+    for i in datalist:
+        d = i.__dict__["data"]
+        d["time_collected"] = i.__dict__["time_collected"]
+        data.append(d)
+
+    return render_template("devices/graph.html", data=data, timeformat=current_app.config["TIMEFORMAT"], device_name=deviceinfo.name)
+
+
