@@ -6,19 +6,12 @@ from flask_login import login_required
 from flask_restful import Resource, reqparse
 
 from webserver import db
+from webserver.common.utils import * 
 from webserver.models import Data, DeviceInfo, User
 
 parser = reqparse.RequestParser()
 parser.add_argument("data", type=dict, location="json", required=True)
 parser.add_argument("time_collected", type=str, location="json")
-
-
-def get_deviceinfo(username, device_name):
-    devicelist = User.query.filter_by(username=username).first().devicelist
-    for deviceinfo in devicelist:
-        if deviceinfo.name == device_name:
-            return deviceinfo
-    return None
 
 
 class DeviceData(Resource):
