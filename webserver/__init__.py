@@ -69,4 +69,5 @@ def create_app(test_config=None, **kwargs):
 
     return app
 
+
 app = create_app()

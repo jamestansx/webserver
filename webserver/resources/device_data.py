@@ -6,7 +6,7 @@ from flask_login import login_required
 from flask_restful import Resource, reqparse
 
 from webserver import db
-from webserver.common.utils import * 
+from webserver.common.utils import *
 from webserver.models import Data, DeviceInfo, User
 
 parser = reqparse.RequestParser()

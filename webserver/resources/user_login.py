@@ -17,7 +17,7 @@ class UserLogin(Resource):
             )
 
         user = User.query.filter_by(username=auth.username).first()
-        
+
         if user is None:
             return make_response(
                 "could not verify",
