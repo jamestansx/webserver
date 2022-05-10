@@ -9,7 +9,7 @@ class UserLogin(Resource):
     def get(self):
         auth = request.authorization
 
-        if not auth or not auth.username or not auth.password:
+        if auth is None:
             return make_response(
                 "could not verify",
                 401,
@@ -17,6 +17,13 @@ class UserLogin(Resource):
             )
 
         user = User.query.filter_by(username=auth.username).first()
+        
+        if user is None:
+            return make_response(
+                "could not verify",
+                401,
+                {"WWW.Authentication": 'Basic realm: "login required"'},
+            )
 
         if user.verify_password(auth.password):
             return dict(
