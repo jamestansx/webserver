@@ -7,8 +7,8 @@ import json
 import time
 import utime
 
-LOGIN_URL = "http://192.168.43.74:5000/api/user/login"
-POST_URL = "http://192.168.43.74:5000/api/device/esp32/data"
+LOGIN_URL = "http://192.168.43.74:8080/api/user/login"
+POST_URL = "http://192.168.43.74:8080/api/device/esp32/data"
 REFRESH_INTERVAL = 5 #second
 
 def read_sensor() -> dict:
