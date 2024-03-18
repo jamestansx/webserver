@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block content %}
+<h2 style="font-weight: bold" id='header2'></h2>
+<h4 style="font-weight: bold" id='header4'></h4>
+<div class="table-responsive">
+<table class="table table-striped table-hover" id='table'>
+    <tr>
+        <th>MEASUREMENT</th>
+        <th>VALUE</th>
+    </tr>
+</table>
+</div>
+
+<a class="btn btn-primary" href="{{request.base_url}}/graph" role="button">Generate Data Graph</a>
+
+
+
+
+<script>
+async function getData() {
+        let url = "{{apipath}}";
+    try {
+            let res = await fetch(url);
+        return await res.json();
+    } catch (error) {
+        console.log("funck");
+        console.log(error);
+    }
+}
+
+    async function renderData() {
+        let json = await getData();
+        let html = '<tr> <th>MEASUREMENT</th> <th>VALUE</th> </tr>';
+        document.getElementById('header2').innerHTML = json.device_name;
+        document.getElementById('header4').innerHTML = `(id: ${json.device_id})`;
+        for (let i in json.data){
+            for ([key, val] of Object.entries(json.data[i])){
+                html += `<tr><td>${key}</td>`;
+                console.log(key,val);
+                html += `<td>${val}</td></tr>`;
+            }
+        }
+        document.getElementById('table').innerHTML = html;
+    };
+    renderData();
+    setInterval(renderData, 5000);
+</script>
+{% endblock %}
+
+
+

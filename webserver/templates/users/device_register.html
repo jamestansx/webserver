@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %} Device Registration {% endblock %}
+
+{% block content %} 
+{% from "_formhelper.html" import render_field %}
+<style>
+li {
+list-style-position: inside;
+}
+</style>
+<div class="text-center justify-content-center">
+<h1 class="h3 mb-3 fw-normal">Device Registration</h1>
+<hr>
+<form method="post" action="", class="form", role='form'>
+  {{ form.csrf_token }}
+  <dl>
+    {{ render_field(form.devicename) }}
+    {{ render_field(form.datatypes) }}
+    <button type="button" id="add-datatype-field">Add</button>
+    <button type="button" id="remove-datatype-field">Remove</button>
+  </dl>
+  <p><input id="submit" type="submit"></input>
+</form>
+<script>
+    function button() {
+        let addMovieFieldBtn = document.getElementById('add-datatype-field');
+        console.log(addMovieFieldBtn);
+        let removeMovieFieldBtn = document.getElementById('remove-datatype-field');
+        console.log(removeMovieFieldBtn);
+        removeMovieFieldBtn.addEventListener('mouseenter', function(e){
+            e.preventDefault();
+            let allMoviesFieldWrapper = document.getElementById('datatypes');
+            let allMoviesField = allMoviesFieldWrapper.getElementsByTagName('input');
+            if(allMoviesField.length <= 1) {
+                removeMovieFieldBtn.disabled = true;
+                return;
+            }
+            else {
+                removeMovieFieldBtn.disabled = false;
+            }
+        });
+        addMovieFieldBtn.addEventListener('mouseenter', function(e){
+            e.preventDefault();
+            let allMoviesFieldWrapper = document.getElementById('datatypes');
+            let allMoviesField = allMoviesFieldWrapper.getElementsByTagName('input');
+            if(allMoviesField.length <= 1) {
+                removeMovieFieldBtn.disabled = true;
+                return;
+            }
+            else {
+                removeMovieFieldBtn.disabled = false;
+            }
+        });
+        removeMovieFieldBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            let allMoviesFieldWrapper = document.getElementById('datatypes');
+            let allMoviesField = allMoviesFieldWrapper.getElementsByTagName('input');
+            if(allMoviesField.length < 2) {
+                removeMovieFieldBtn.disabled = true;
+                return;
+            }
+            else {
+                removeMovieFieldBtn.disabled = false;
+            }
+            let movieInputIds = []
+            for(let i = 0; i < allMoviesField.length; i++) {
+                movieInputIds.push(parseInt(allMoviesField[i].name.split('-')[1]));
+            }
+            let newFieldName = `datatype-${Math.max(...movieInputIds)}`;
+            var remove = document.getElementById(newFieldName);
+            remove.parentElement.remove();
+        });
+        addMovieFieldBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            let allMoviesFieldWrapper = document.getElementById('datatypes');
+            let allMoviesField = allMoviesFieldWrapper.getElementsByTagName('input');
+            console.log(allMoviesField);
+            let movieInputIds = []
+            for(let i = 0; i < allMoviesField.length; i++) {
+                movieInputIds.push(parseInt(allMoviesField[i].name.split('-')[1]));
+            }
+            let newFieldName = `datatype-${Math.max(...movieInputIds) + 1}`;
+            allMoviesFieldWrapper.insertAdjacentHTML('beforeend',`
+            <li><label for="${newFieldName}">Name</label> <input id="${newFieldName}" name="${newFieldName}" type="text" value=""></li> 
+            `);
+        });
+    };
+
+    window.addEventListener ? 
+        window.addEventListener("load",button,false) 
+        : 
+        window.attachEvent && window.attachEvent("onload", button);
+</script>
+</div>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+<script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+<py-env>
+    - matplotlib
+</py-env>
+{% endblock %}
+
+
+{% block content %}
+<div class="d-grid gap-2 d-md-block">
+    <a class="btn btn-primary" href="{{url_for('devices.monitor', device_name=device_name)}}" role="button">Back</a>
+</div>
+<div id="graph"></div>
+
+<py-script output="graph">
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import datetime
+
+data = {{data}}
+time = list()
+value = list()
+
+for i in data:
+    time.append(i["time_collected"])
+    value.append(i["val"])
+
+fig, ax = plt.subplots(1)
+fig.autofmt_xdate()
+plt.plot(time, value)
+xfmt = mdates.DateFormatter('{{timeformat}}')
+ax.xaxis.set_major_formatter(xfmt)
+plt.title("DATA")
+plt.xlabel("Time")
+plt.ylabel("Value")
+plt.show()
+plt
+</py-script>
+{% endblock %}
+
+
+
+

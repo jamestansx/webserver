@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+<h1>{% block title %} Welcome to blinkpie {% endblock %}</h1>
+
+{% block content %}
+<div class="text-center">
+{% if not current_user.is_authenticated %}
+<h3> Sign in or Register to Use! </h3>
+{% else %}
+<h3> Welcome, {{g.user.username}} </h3>
+{% endif %}
+{% endblock %}
